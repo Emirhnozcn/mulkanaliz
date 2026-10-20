@@ -1,5 +1,8 @@
+
 import pytest
+from pathlib import Path
 from pydantic import ValidationError
+from sqlalchemy.engine import make_url
 
 from app.core.config import Settings
 
@@ -40,10 +43,20 @@ def test_production_rejects_wildcard_or_http_cors_origins():
 
 
 def test_relative_sqlite_database_path_is_stable_under_backend_directory():
-    from pathlib import Path
-
-    settings = Settings(database_url="sqlite+pysqlite:///./data/real_estate_dev.db")
+    settings = Settings(
+        database_url="sqlite+pysqlite:///./data/real_estate_dev.db"
+    )
     resolved = settings.resolved_database_url
-    expected = Path(__file__).resolve().parents[1] / "data" / "real_estate_dev.db"
-    assert str(expected) in resolved
+
+    expected = (
+        Path(__file__).resolve().parents[1]
+        / "data"
+        / "real_estate_dev.db"
+    )
+
+    # Compare the decoded database path, not the encoded URL string.
+    resolved_path = make_url(resolved).database
+
+    assert resolved_path is not None
+    assert Path(resolved_path).resolve() == expected.resolve()
     assert expected.parent.is_dir()
