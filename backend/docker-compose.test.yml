@@ -1,0 +1,19 @@
+# Disposable PostgreSQL integration-test service only. Not for production.
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: rea_test
+      POSTGRES_USER: rea_test_user
+      # Fixed disposable credential, loopback-only and test-only. Never reuse outside this service.
+      POSTGRES_PASSWORD: rea_test_only_password
+    ports:
+      - "127.0.0.1:55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data:size=512m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: "no"

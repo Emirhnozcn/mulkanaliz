@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Emlak İlan Aktarıcı</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <header><div class="eyebrow">EMLAK ANALİZ</div><h1>İlan aktarımı</h1><p>Yalnızca açık olan ve erişimine izin verilen sayfada çalışır.</p></header>
+  <section class="panel">
+    <label>API adresi<input id="apiBase" type="url" placeholder="http://localhost:8000"></label>
+    <div class="row"><label>Kullanıcı adı<input id="loginEmail" type="text" autocomplete="username" placeholder="kullaniciadi"></label><label>Parola<input id="loginPassword" type="password" autocomplete="current-password"></label></div><button id="login" class="secondary">API hesabıyla giriş yap</button><p id="loginState" class="muted">Giriş yapılmadı.</p><label for="locationId">Mahalle / konum<select id="locationId" name="locationId" required disabled><option value="">Önce API hesabınızla giriş yapın</option></select></label>
+    <label>Gayrimenkul türü<select id="propertyType"><option value="apartment">Daire</option><option value="detached_house">Müstakil ev</option><option value="villa">Villa</option><option value="residential_zoned_land">Konut imarlı arsa</option><option value="commercial_zoned_land">Ticari imarlı arsa</option><option value="farmland">Tarla</option></select></label>
+    <button id="extract" class="secondary">Açık sayfadan verileri çıkar</button>
+  </section>
+  <section class="panel" id="previewPanel" hidden>
+    <h2>Aktarım önizlemesi</h2>
+    <p id="sourceLabel" class="muted"></p>
+    <label>Başlık<input id="title" maxlength="300"></label>
+    <label>İlan türü<select id="transactionType"><option value="sale">Satılık</option><option value="rent">Kiralık (aylık)</option></select></label>
+    <label>İlan fiyatı (TL)<input id="price" inputmode="decimal" placeholder="Satılık fiyatı veya aylık kira"></label>
+    <div class="row residential-fields"><label>Net m²<input id="netArea" inputmode="decimal"></label><label>Brüt m²<input id="grossArea" inputmode="decimal"></label></div>
+    <div class="row residential-fields"><label>Oda sayısı<input id="roomCount" type="text" placeholder="2+1"></label><label>Bina yaşı<input id="buildingAge" type="text" placeholder="16-20 arası"></label></div>
+    <div class="row residential-fields"><label>Bulunduğu kat<input id="floorNumber" type="number" min="-10"></label><label>Bina kat sayısı<input id="totalFloors" type="number" min="1"></label></div>
+    <label class="land-field" hidden>Parsel alanı (m²)<input id="parcelArea" inputmode="decimal"></label>
+    <div class="row land-field zoning-fields" hidden><label>İmar durumu<input id="zoningStatus"></label><label>İmar kullanımı<input id="zoningUse"></label></div>
+    <div class="location-fields">
+      <h3>İlan konumu</h3>
+      <p class="muted">Otomatik okunan konumu kontrol et; eksikse elle tamamla.</p>
+      <label>İl<input id="province" autocomplete="address-level1" placeholder="Örn. Bolu"></label>
+      <label>İlçe<input id="district" autocomplete="address-level2" placeholder="Örn. Merkez"></label>
+      <label>Mahalle<input id="neighborhood" placeholder="Örn. Gölyüzü"></label>
+    </div>
+    <label>Adres (bulunabiliyorsa)<input id="address"></label>
+    <label>Harici ilan ID (bulunabiliyorsa)<input id="sourceListingId"></label>
+    <details><summary>Kaynak ve çıkarım uyarıları</summary><p id="warnings" class="warning"></p><p id="sourceUrl" class="muted break"></p></details>
+    <button id="import" class="primary">Kontrol ettim, sisteme aktar</button>
+  </section>
+  <div id="status" role="status" aria-live="polite" class="status"></div>
+  <footer>Veri aktarımı kullanıcı tıklamasıyla yapılır. Koruma mekanizmaları aşılmaz; çıkarılan bilgiler kaydetmeden önce kontrol edilmelidir.</footer>
+  <script type="module" src="dist/popup.js"></script>
+</body></html>

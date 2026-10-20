@@ -1,0 +1,14 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Persistent local database; keep the folder marker, never package user records.
+data/*.db
+data/*.db-shm
+data/*.db-wal

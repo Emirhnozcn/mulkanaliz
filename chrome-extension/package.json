@@ -1,0 +1,7 @@
+{
+  "name": "emlak-ilan-aktarici",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "build": "tsc --noEmit false --outDir dist", "typecheck": "tsc --noEmit" },
+  "devDependencies": { "@types/chrome": "^0.0.315", "typescript": "^5.7.3" }
+}

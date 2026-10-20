@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Emlak İlan Aktarıcı",
+  "version": "1.0.0",
+  "description": "Danışmanın onayladığı ve erişimine izin verilen ilan sayfasından bilgileri mevcut emlak analiz API'sine aktarır.",
+  "action": { "default_title": "İlanı analiz sistemine aktar", "default_popup": "popup.html" },
+  "permissions": ["activeTab", "scripting", "storage"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"]
+}

@@ -1,0 +1,21 @@
+# Local development database only. Set DEV_POSTGRES_PASSWORD in the shell or ignored .env.
+# This service is separate from docker-compose.test.yml and is not a production deployment.
+services:
+  postgres-dev:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DEV_POSTGRES_DB:-real_estate_dev}
+      POSTGRES_USER: ${DEV_POSTGRES_USER:-rea_dev}
+      POSTGRES_PASSWORD: ${DEV_POSTGRES_PASSWORD:?Set DEV_POSTGRES_PASSWORD in your local shell or ignored .env file}
+    ports:
+      - "127.0.0.1:55431:5432"
+    volumes:
+      - rea-postgres-dev-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+volumes:
+  rea-postgres-dev-data:
