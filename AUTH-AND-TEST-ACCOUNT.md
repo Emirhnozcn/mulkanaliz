@@ -1,23 +1,26 @@
-# Authentication and local demo account
+# Authentication and Local Demo Account
 
 Authentication uses a unique username and a password hash stored in PostgreSQL. Passwords are never stored in plaintext; the backend uses salted scrypt hashes.
 
-After upgrading the database, create/reset the local demo account from `backend`:
+## Local Demo Account
+
+After upgrading the database, create or reset a local demo account from the `backend` directory:
 
 ```powershell
 python scripts/create_test_account.py
 ```
 
-Local demo credentials:
-- Username: `demo`
-- Password: `Demo1234!Demo`
+This script refuses to run when `ENVIRONMENT=production`.
 
-The account script refuses to run when `ENVIRONMENT=production`. Do not use these credentials in a deployed environment. The login screen intentionally does not display demo credentials or prefill the form.
+Demo credentials are intentionally excluded from this document. Do not use demo credentials in a deployed environment.
 
-Existing users receive temporary usernames such as `user_1` during migration `0003_usernames`; they can sign in with that username until the application provides an account profile flow. New registrations choose a username.
+The login screen does not display demo credentials or prefill the login form.
 
+Existing users receive temporary usernames such as `user_1` during migration `0003_usernames`. New registrations choose a username.
 
-## Ofis davet kodu ve kayıt
-- Çalışan kaydında e-posta istenmez; kullanıcı adı benzersizdir. Mevcut veritabanı uyumluluğu için e-posta alanında teslim edilemeyen `@users.invalid` adresi tutulur; bu adres e-posta gönderimi için kullanılmaz.
-- Ofis kayıt kodu backend `.env` dosyasındaki `OFFICE_REGISTRATION_CODE` ayarından gelir.
-- Yönetici, oturum açtıktan sonra Kullanıcı yönetimi ekranında **Kodu göster** düğmesiyle kodu görebilir ve kopyalayabilir. Bu işlem backend'de yönetici rolüyle korunur.
+## Office Invitation Code and Registration
+
+- Employee registration uses a unique username and does not require an email address.
+- For database compatibility, a non-deliverable `@users.invalid` address is stored; it is not used for sending email.
+- The office registration code is configured through the backend `.env` file using `OFFICE_REGISTRATION_CODE`.
+- Administrators can view and copy the code from the User Management screen after signing in. Backend authorization restricts this action to administrators.
